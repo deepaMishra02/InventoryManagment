@@ -9,4 +9,4 @@ COPY . .
 
 ENV PYTHONUNBUFFERED=1
 
-CMD ["sh", "-c", "gunicorn --log-level debug --access-logfile - --error-logfile - --bind 0.0.0.0:${PORT:-5000} wsgi:app"]
+CMD ["sh", "-c", "gunicorn --workers=4 --bind 0.0.0.0:$PORT wsgi:app"]
