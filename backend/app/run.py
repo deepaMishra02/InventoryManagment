@@ -5,10 +5,15 @@ from app.routes.products import product_bp
 from app.routes.customer import customer_bp
 from app.routes.orders import order_bp
 from app.middleware.api_auth import authenticate_request
-    
+import os
 
 app = Flask(__name__)
 CORS(app)
+if __name__ == "__main__":
+    app.run(
+        host="0.0.0.0",
+        port=int(os.environ.get("PORT", 5000))
+    )
 # ✅ DATABASE CONFIG (required)
 app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://postgres:postgres@postgres:5432/inventory_db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
