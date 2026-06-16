@@ -245,13 +245,22 @@ function Orders() {
       </DialogTitle>
 
       <DialogContent>
-
         <TextField
           select
           fullWidth
           margin="normal"
           label="Customer"
           value={orderForm.customer_id}
+          InputLabelProps={{ shrink: true }}
+          sx={{
+            "& .MuiOutlinedInput-root": {
+              height: 44,
+            },
+            "& .MuiInputLabel-root": {
+              backgroundColor: "#fff",
+              px: 0.5,
+            },
+          }}
           onChange={(e) =>
             setOrderForm({
               ...orderForm,
@@ -260,10 +269,7 @@ function Orders() {
           }
         >
           {customers.map((customer) => (
-            <MenuItem
-              key={customer.id}
-              value={customer.id}
-            >
+            <MenuItem key={customer.id} value={customer.id}>
               {customer.name}
             </MenuItem>
           ))}
@@ -282,19 +288,22 @@ function Orders() {
                 fullWidth
                 label="Product"
                 value={item.product_id}
+                InputLabelProps={{ shrink: true }}
+                sx={{
+                    "& .MuiOutlinedInput-root": {
+                      height: 44,
+                    },
+                  "& .MuiInputLabel-root": {
+                    backgroundColor: "#fff",
+                    px: 0.5,
+                  },
+                }}
                 onChange={(e) =>
-                  handleProductChange(
-                    index,
-                    "product_id",
-                    e.target.value
-                  )
+                  handleProductChange(index, "product_id", e.target.value)
                 }
               >
                 {products.map((product) => (
-                  <MenuItem
-                    key={product.id}
-                    value={product.id}
-                  >
+                  <MenuItem key={product.id} value={product.id}>
                     {product.name}
                   </MenuItem>
                 ))}
@@ -307,12 +316,15 @@ function Orders() {
                 type="number"
                 label="Quantity"
                 value={item.quantity}
+                InputLabelProps={{ shrink: true }}
+                sx={{
+                  "& .MuiInputLabel-root": {
+                    backgroundColor: "#fff",
+                    px: 0.5,
+                  },
+                }}
                 onChange={(e) =>
-                  handleProductChange(
-                    index,
-                    "quantity",
-                    Number(e.target.value)
-                  )
+                  handleProductChange(index, "quantity", Number(e.target.value))
                 }
               />
             </Grid>
