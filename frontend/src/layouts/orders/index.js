@@ -29,10 +29,14 @@ import { getCustomers } from "api/customers";
 import { getProducts } from "api/products";
 // Data
 import authorsTableData from "layouts/orders/data/authorsTableData";
+import Tooltip from "@mui/material/Tooltip";
+import Icon from "@mui/material/Icon";
+
 
 function Orders() {
   const [orders, setOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [openModal, setOpenModal] = useState(false);
   const [snackbar, setSnackbar] = useState({
     open: false,
@@ -60,6 +64,7 @@ function Orders() {
   
 
   const fetchDropdownData = async () => {
+    
     try {
       const customerRes = await getCustomers();
       const productRes = await getProducts();
@@ -109,6 +114,7 @@ function Orders() {
     });
   };
   const fetchOrders = async () => {
+    setLoading(true);
     try {
       const response = await getOrders();
 
@@ -117,6 +123,9 @@ function Orders() {
       setOrders(response.data || []);
     } catch (error) {
       console.error(error);
+    }
+    finally {
+      setLoading(false);
     }
   };
 
@@ -409,37 +418,52 @@ function Orders() {
             <Card>
               <MDBox
                 mx={2}
-                mt={-3}
-                py={3}
+                pt={3}
                 px={2}
-                variant="gradient"
-                bgColor="info"
-                borderRadius="lg"
-                coloredShadow="info"
                 display="flex"
                 justifyContent="space-between"
                 alignItems="center"
               >
-                <MDTypography variant="h6" color="white">
-                  All Orders
-                </MDTypography>
-                <Button
-                  variant="contained"
-                  color="success"
-                  onClick={handleOpenModal}
-                  sx={{ ml: "auto", display: "block" }}
-                >
-                  New Order
-                </Button>
+                <MDBox display="flex" flexDirection="column">
+                  <MDTypography variant="h6" color="dark" fontWeight="bold">
+                    All Orders
+                  </MDTypography>
+                  <MDTypography variant="button" color="secondary" fontWeight="regular">
+                    See all details of Orders
+                  </MDTypography>
+                </MDBox>
+
+                <Tooltip title="Place new Order">
+                  <Button
+                    variant="contained"
+                    color="success"
+                    onClick={handleOpenModal}
+                    sx={{
+                      minWidth: 0,
+                      width: 40,
+                      height: 40,
+                      borderRadius: "50%",
+                      borders: 2,
+                      p: 0,
+                      "&:hover": {
+                        backgroundColor: "#222",
+                        color: "white !important",
+                      },
+                    }}
+                  >
+                    <Icon sx={{ fontWeight: "bold", fontSize: "1.4rem" }}>add</Icon>
+                  </Button>
+                </Tooltip>
               </MDBox>
-              <MDBox pt={3}>
+              <MDBox>
                 <DataTable
                   table={{ columns, rows }}
                   isSorted={true}
-                  entriesPerPage={true}
+                  entriesPerPage={false}
                   showTotalEntries={true}
                   noEndBorder
                   canSearch
+                  loading={loading}
                 />
               </MDBox>
             </Card>

@@ -20,14 +20,18 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import TextField from "@mui/material/TextField";
-
+import Icon from "@mui/material/Icon";
+import Tooltip from "@mui/material/Tooltip";
+import Divider from "@mui/material/Divider";
 import { createProduct,updateProduct } from "api/products";
 // Data
 import authorsTableData from "layouts/tables/data/authorsTableData";
+import borders from "assets/theme/base/borders";
 
 function Tables() {
   const [products, setProducts] = useState([]);
   const [editingProduct, setEditingProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: "",
@@ -44,6 +48,7 @@ function Tables() {
   }, []);
 
   const fetchProducts = async () => {
+    setLoading(true);
     try {
       const response = await getProducts();
 
@@ -52,6 +57,9 @@ function Tables() {
       setProducts(response.data || []);
     } catch (error) {
       console.error(error);
+    }
+    finally {
+      setLoading(false);
     }
   };
   const handleEdit = (product) => {
@@ -233,37 +241,53 @@ function Tables() {
             <Card>
               <MDBox
                 mx={2}
-                mt={-3}
-                py={3}
+                pt={3}
                 px={2}
-                variant="gradient"
-                bgColor="info"
-                borderRadius="lg"
-                coloredShadow="info"
                 display="flex"
                 justifyContent="space-between"
                 alignItems="center"
               >
-                <MDTypography variant="h6" color="white">
-                  All Products
-                </MDTypography>
-                <Button
-                  variant="contained"
-                  color="success"
-                  onClick={handleOpenModal}
-                  sx={{ ml: "auto", display: "block" }}
-                >
-                  New Product
-                </Button>
+                <MDBox display="flex" flexDirection="column">
+                  <MDTypography variant="h6" color="dark" fontWeight="bold">
+                    All Products
+                  </MDTypography>
+                  <MDTypography variant="button" color="secondary" fontWeight="regular">
+                    See all details of Products
+                  </MDTypography>
+                </MDBox>
+
+                <Tooltip title="Add New Product">
+                  <Button
+                    variant="contained"
+                    color="success"
+                    onClick={handleOpenModal}
+                    sx={{
+                      minWidth: 0,
+                      width: 40,
+                      height: 40,
+                      borderRadius: "50%",
+                      borders: 2,
+                      p: 0,
+                      "&:hover": {
+                        backgroundColor: "#222",
+                        color: "white !important",
+                      },
+                    }}
+                  >
+                    <Icon sx={{ fontWeight: "bold", fontSize: "1.4rem" }}>add</Icon>
+                  </Button>
+                </Tooltip>
               </MDBox>
-              <MDBox pt={3}>
+              
+              <MDBox>
                 <DataTable
                   table={{ columns, rows }}
                   isSorted={true}
-                  entriesPerPage={true}
+                  entriesPerPage={false}
                   showTotalEntries={true}
                   noEndBorder
                   canSearch
+                  loading={loading}
                 />
               </MDBox>
             </Card>

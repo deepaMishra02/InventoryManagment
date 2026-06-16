@@ -26,6 +26,7 @@ import { getDashboardSummary } from "api/dashboard";
 function Dashboard() {
   const [chartData, setChartData] = useState(null);
   const [dashboardSummary, setDashboardSummary] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const sales = chartData?.sales;
 
@@ -38,8 +39,17 @@ function Dashboard() {
       const charts = getChartData(summary);
       setChartData(charts);
     };
-
-    fetchDashboardSummary();
+    setLoading(true);
+    try{
+      fetchDashboardSummary();
+    }
+    catch (error){
+      console.error(error);
+    }
+    finally{
+      setLoading(false);
+    }
+    
   }, []);
 
   return (
@@ -92,6 +102,7 @@ function Dashboard() {
             <Grid item xs={12} md={6} lg={7}>
               <Projects
                 lowStockProducts={dashboardSummary?.low_stock_products || []}
+                loading={loading}
               />
             </Grid>
             <Grid item xs={12} md={6} lg={5}>

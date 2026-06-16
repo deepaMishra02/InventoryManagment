@@ -25,6 +25,8 @@ import MDPagination from "components/MDPagination";
 import DataTableHeadCell from "examples/Tables/DataTable/DataTableHeadCell";
 import DataTableBodyCell from "examples/Tables/DataTable/DataTableBodyCell";
 
+import TableCell from "@mui/material/TableCell";
+import CircularProgress from "@mui/material/CircularProgress";
 function DataTable({
   entriesPerPage,
   canSearch,
@@ -33,6 +35,7 @@ function DataTable({
   pagination,
   isSorted,
   noEndBorder,
+  loading,
 }) {
   const defaultValue = entriesPerPage.defaultValue ? entriesPerPage.defaultValue : 10;
   const entries = entriesPerPage.entries
@@ -187,23 +190,39 @@ function DataTable({
           ))}
         </MDBox>
         <TableBody {...getTableBodyProps()}>
-          {page.map((row, key) => {
-            prepareRow(row);
-            return (
-              <TableRow key={key} {...row.getRowProps()}>
-                {row.cells.map((cell, idx) => (
-                  <DataTableBodyCell
-                    key={idx}
-                    noBorder={noEndBorder && rows.length - 1 === key}
-                    align={cell.column.align ? cell.column.align : "left"}
-                    {...cell.getCellProps()}
-                  >
-                    {cell.render("Cell")}
-                  </DataTableBodyCell>
-                ))}
-              </TableRow>
-            );
-          })}
+          {loading ? (
+            <TableRow>
+              <TableCell colSpan={columns.length} align="center" sx={{ py: 5, border: "none" }}>
+                <CircularProgress color="info" size={28} />
+              </TableCell>
+            </TableRow>
+          ) : page.length === 0 ? (
+            <TableRow>
+              <TableCell colSpan={columns.length} align="center" sx={{ py: 5, border: "none" }}>
+                <MDTypography variant="button" color="secondary" fontWeight="bold">
+                  No data available
+                </MDTypography>
+              </TableCell>
+            </TableRow>
+          ) : (
+            page.map((row, key) => {
+              prepareRow(row);
+              return (
+                <TableRow key={key} {...row.getRowProps()}>
+                  {row.cells.map((cell, idx) => (
+                    <DataTableBodyCell
+                      key={idx}
+                      noBorder={noEndBorder && rows.length - 1 === key}
+                      align={cell.column.align ? cell.column.align : "left"}
+                      {...cell.getCellProps()}
+                    >
+                      {cell.render("Cell")}
+                    </DataTableBodyCell>
+                  ))}
+                </TableRow>
+              );
+            })
+          )}
         </TableBody>
       </Table>
 
@@ -262,6 +281,7 @@ DataTable.defaultProps = {
   pagination: { variant: "gradient", color: "info" },
   isSorted: true,
   noEndBorder: false,
+  loading: false,
 };
 
 // Typechecking props for the DataTable
@@ -291,6 +311,7 @@ DataTable.propTypes = {
   }),
   isSorted: PropTypes.bool,
   noEndBorder: PropTypes.bool,
+  loading: PropTypes.bool,
 };
 
 export default DataTable;

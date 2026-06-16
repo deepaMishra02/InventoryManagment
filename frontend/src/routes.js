@@ -62,7 +62,7 @@ const routes = [
     name: "Products",
     key: "tables",
     icon: <Icon fontSize="small">table_view</Icon>,
-    route: "/products",
+    route: "/tables",
     component: <Tables />,
   },
   {

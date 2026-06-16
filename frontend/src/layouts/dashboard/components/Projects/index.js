@@ -12,7 +12,10 @@ import DataTable from "examples/Tables/DataTable";
 // Data
 import data from "layouts/dashboard/components/Projects/data";
 
-function Projects({ lowStockProducts = [] }) {
+function Projects({ 
+  lowStockProducts = [],
+  loading,
+ }) {
   const { columns, rows } = data(lowStockProducts);
 
   return (
@@ -31,6 +34,7 @@ function Projects({ lowStockProducts = [] }) {
           isSorted={true}
           noEndBorder
           entriesPerPage={true}
+          loading={loading}
         />
       </MDBox>
     </Card>

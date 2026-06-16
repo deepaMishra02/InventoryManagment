@@ -20,13 +20,15 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import TextField from "@mui/material/TextField";
-
 import { createCustomer,updateCustomer } from "api/customers";
 // Data
 import authorsTableData from "layouts/customers/data/authorsTableData";
+import Tooltip from "@mui/material/Tooltip";
+import Icon from "@mui/material/Icon";
 
 function Customers() {
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [editingProduct, setEditingProduct] = useState(null);
   const [snackbar, setSnackbar] = useState({
     open: false,
@@ -44,6 +46,7 @@ function Customers() {
   }, []);
 
   const fetchProducts = async () => {
+    setLoading(true);
     try {
       const response = await getCustomers();
 
@@ -52,6 +55,9 @@ function Customers() {
       setProducts(response.data || []);
     } catch (error) {
       console.error(error);
+    }
+    finally {
+      setLoading(false);
     }
   };
   const handleEdit = (product) => {
@@ -258,37 +264,52 @@ const handleSubmit = async () => {
             <Card>
               <MDBox
                 mx={2}
-                mt={-3}
-                py={3}
+                pt={3}
                 px={2}
-                variant="gradient"
-                bgColor="info"
-                borderRadius="lg"
-                coloredShadow="info"
                 display="flex"
                 justifyContent="space-between"
                 alignItems="center"
               >
-                <MDTypography variant="h6" color="white">
-                  All Customers
-                </MDTypography>
-                <Button
-                  variant="contained"
-                  color="success"
-                  onClick={handleOpenModal}
-                  sx={{ ml: "auto", display: "block" }}
-                >
-                  New Customer
-                </Button>
+                <MDBox display="flex" flexDirection="column">
+                  <MDTypography variant="h6" color="dark" fontWeight="bold">
+                    All Customers
+                  </MDTypography>
+                  <MDTypography variant="button" color="secondary" fontWeight="regular">
+                    See all details of Customers
+                  </MDTypography>
+                </MDBox>
+
+                <Tooltip title="Register New Customer">
+                  <Button
+                    variant="contained"
+                    color="success"
+                    onClick={handleOpenModal}
+                    sx={{
+                      minWidth: 0,
+                      width: 40,
+                      height: 40,
+                      borderRadius: "50%",
+                      borders: 2,
+                      p: 0,
+                      "&:hover": {
+                        backgroundColor: "#222",
+                        color: "white !important",
+                      },
+                    }}
+                  >
+                    <Icon sx={{ fontWeight: "bold", fontSize: "1.4rem" }}>add</Icon>
+                  </Button>
+                </Tooltip>
               </MDBox>
-              <MDBox pt={3}>
+              <MDBox>
                 <DataTable
                   table={{ columns, rows }}
                   isSorted={true}
-                  entriesPerPage={true}
+                  entriesPerPage={false}
                   showTotalEntries={true}
                   noEndBorder
                   canSearch
+                  loading={loading}
                 />
               </MDBox>
             </Card>

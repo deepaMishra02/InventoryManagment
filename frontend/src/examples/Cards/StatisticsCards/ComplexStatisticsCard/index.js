@@ -38,19 +38,19 @@ function ComplexStatisticsCard({ color, title, count, percentage, icon }) {
           display="flex"
           justifyContent="center"
           alignItems="center"
-          width="4rem"
-          height="4rem"
+          width="3rem"
+          height="3rem"
           mt={-3}
         >
-          <Icon fontSize="medium" color="inherit">
+          <Icon fontSize="small" color="inherit">
             {icon}
           </Icon>
         </MDBox>
-        <MDBox textAlign="right" lineHeight={1.25}>
-          <MDTypography variant="button" fontWeight="light" color="text">
+        <MDBox textAlign="right" lineHeight={1.25} pb={1}>
+          <MDTypography variant="button" fontWeight="bold" color="text">
             {title}
           </MDTypography>
-          <MDTypography variant="h4">{count}</MDTypography>
+          <MDTypography variant="h5">{count}</MDTypography>
         </MDBox>
       </MDBox>
     </Card>
