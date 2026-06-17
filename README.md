@@ -1,5 +1,5 @@
 Live Links
-    Frontend: https://inventory-three-steel.vercel.app/dashboard
+    Frontend: https://ims-temp-nbv9.vercel.app/dashboard
     Backend API: https://inventory-d4ni.onrender.com/health
     Docker Hub Backend Image: https://hub.docker.com/r/deepamishra06/flask-backend
 
